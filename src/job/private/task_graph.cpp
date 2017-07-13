@@ -2,6 +2,7 @@
 #include "job/private/internal_types.h"
 
 #include "core/map.h"
+#include "core/misc.h"
 #include "core/set.h"
 
 #include <algorithm>
@@ -20,14 +21,17 @@ namespace Job
 	struct TaskDesc
 	{
 		TaskDesc(i32 idx, ITask* task)
-			: idx_(idx)
-			, task_(task)
-		{}
+		    : idx_(idx)
+		    , task_(task)
+		{
+		}
 
 		i32 idx_ = -1;
+		i32 group_ = 0;
 		ITask* task_ = nullptr;
 
 		TaskDependencies dependencies_;
+		i32 numDependents_ = 0;
 	};
 
 	using TaskDescVec = Core::Vector<TaskDesc>;
@@ -45,10 +49,7 @@ namespace Job
 		bool IsTaskInDependencyGraph(ITask* task, const TaskDependencies& dependencies)
 		{
 			auto foundIt = std::find_if(dependencies.begin(), dependencies.end(),
-				[this, task](i32 idx)
-				{
-					return taskDescs_[idx].task_ == task;
-				});
+			    [this, task](i32 idx) { return taskDescs_[idx].task_ == task; });
 
 			if(foundIt != dependencies.end())
 			{
@@ -56,20 +57,24 @@ namespace Job
 			}
 
 			// Recurse dependencies.
-			bool dependencyInGraph = false; 
+			bool dependencyInGraph = false;
 			for(auto depIdx : dependencies)
 			{
 				const auto it = std::find_if(taskDescs_.begin(), taskDescs_.end(),
-					[depIdx](const TaskDesc& taskDesc)
-					{
-						return taskDesc.idx_ == depIdx;
-					});
+				    [depIdx](const TaskDesc& taskDesc) { return taskDesc.idx_ == depIdx; });
 				DBG_ASSERT(it != taskDescs_.end());
 				dependencyInGraph |= IsTaskInDependencyGraph(task, it->dependencies_);
 			}
 			return dependencyInGraph;
 		}
 	};
+
+	TaskGraph::TaskGraph()
+	    : impl_(new TaskGraphImpl())
+	{
+	}
+
+	TaskGraph::~TaskGraph() { delete impl_; }
 
 	void TaskGraph::AddTasks(ITask** tasks, i32 numTasks)
 	{
@@ -83,11 +88,10 @@ namespace Job
 			DBG_ASSERT(task);
 
 			auto foundTask = impl_->tasks_.find(task);
-			auto foundTaskDesc = impl_->taskDescs_.end();
 			if(foundTask == impl_->tasks_.end())
 			{
 				foundTask = impl_->tasks_.insert(task, impl_->taskDescs_.size());
-				foundTaskDesc = impl_->taskDescs_.emplace_back(impl_->taskDescs_.size(), task);
+				impl_->taskDescs_.emplace_back(impl_->taskDescs_.size(), task);
 			}
 
 			// If we're current initializing a task, then we should add all these as dependencies.
@@ -97,7 +101,6 @@ namespace Job
 				taskDesc.dependencies_.insert(foundTask->second);
 			}
 		}
-
 	}
 
 	void TaskGraph::InitTasks()
@@ -124,37 +127,69 @@ namespace Job
 			DBG_ASSERT(!impl_->IsTaskInDependencyGraph(taskDesc.task_, taskDesc.dependencies_));
 		}
 #endif
-		// 1) Topological sort.
-		struct TopologicalSort
+
+		// 1) Setup groups for processing.
+		struct GroupingHelper
 		{
 			Core::Set<i32> visited_;
-			Core::Vector<i32> stack_;
 
-			void Visit(const TaskDescVec& inTaskDescs, i32 idx)
+			i32 Visit(TaskDescVec& inTaskDescs, i32 idx, i32 leafDist)
 			{
-				if(visited_.find(idx) == visited_.end())
-					return;
-
 				visited_.insert(idx);
 
+				i32 maxLeafDist = leafDist;
 				for(i32 depIdx : inTaskDescs[idx].dependencies_)
-					Visit(inTaskDescs, depIdx);
+				{
+					maxLeafDist = Core::Max(maxLeafDist, Visit(inTaskDescs, depIdx, leafDist));
+				}
 
-				stack_.push_back(idx);
+				leafDist = maxLeafDist;
+
+				auto& taskDesc = inTaskDescs[idx];
+				taskDesc.group_ = Core::Max(taskDesc.group_, leafDist);
+				return ++leafDist;
 			}
 
-			void Sort(const TaskDescVec& inTaskDescs, TaskIndices& outIndices)
+			void Group(TaskDescVec& inTaskDescs)
 			{
-#error "TODO: Grab tasks free of dependencies."
 				for(const auto& taskDesc : inTaskDescs)
 				{
-					//if(taskDesc.dependencies_.size() == 0)
-						//Visit(inTaskDescs, taskDesc.idx_);
+					i32 leafDist = 0;
+					if(visited_.find(taskDesc.idx_) == visited_.end())
+						Visit(inTaskDescs, taskDesc.idx_, leafDist);
 				}
 			}
-		} sorter;
+		};
 
-		sorter.Sort(impl_->taskDescs_, impl_->sortedTaskIndices_);
+		GroupingHelper grouper;
+		grouper.Group(impl_->taskDescs_);
+
+		// 2) Sort by group.
+		impl_->sortedTaskIndices_.reserve(impl_->taskDescs_.size());
+		for(i32 idx = 0; idx < impl_->taskDescs_.size(); ++idx)
+			impl_->sortedTaskIndices_.emplace_back(idx);
+
+		std::sort(impl_->sortedTaskIndices_.begin(), impl_->sortedTaskIndices_.end(),
+		    [this](i32 idxA, i32 idxB) { return impl_->taskDescs_[idxA].group_ < impl_->taskDescs_[idxB].group_; });
 	}
+
+	void TaskGraph::RunTasks()
+	{
+		// Run tasks in their sorted order.
+		for(i32 idx : impl_->sortedTaskIndices_)
+		{
+			const auto& taskDesc = impl_->taskDescs_[idx];
+			taskDesc.task_->OnTaskWork(*this);
+		}
+
+		// Mark complete.
+		for(i32 idx : impl_->sortedTaskIndices_)
+		{
+			const auto& taskDesc = impl_->taskDescs_[idx];
+			taskDesc.task_->OnTasksComplete(*this);
+		}
+	}
+
+	void TaskGraph::ScheduleTasks() { DBG_ASSERT_MSG(false, "Unimplementd.") }
 
 } // namespace Job

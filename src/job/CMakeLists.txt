@@ -14,6 +14,7 @@ SET(SOURCES_PRIVATE
 SET(SOURCES_TESTS
 	"tests/test_entry.cpp"
 	"tests/job_tests.cpp"
+	"tests/task_graph_tests.cpp"
 )
 
 ADD_ENGINE_LIBRARY(job ${SOURCES_PUBLIC} ${SOURCES_PRIVATE} ${SOURCES_TESTS})

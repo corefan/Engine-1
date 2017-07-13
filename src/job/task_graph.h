@@ -10,11 +10,10 @@ namespace Job
 {
 	class TaskGraph;
 
-	class ITask
+	class JOB_DLL ITask
 	{
 	public:
-		ITask();
-		virtual ~ITask();
+		virtual ~ITask() = default;
 
 		/**
 		 * Called to initialize task prior to scheduling.
@@ -33,14 +32,13 @@ namespace Job
 		virtual void OnTasksComplete(TaskGraph& taskGraph) = 0;
 	};
 
-	
 
 	/**
 	 * Task Graph.
 	 * Used for setting up a graph of dependent tasks on top of
 	 * the job system.
 	 */
-	class TaskGraph final
+	class JOB_DLL TaskGraph final
 	{
 	public:
 		TaskGraph();
@@ -63,8 +61,15 @@ namespace Job
 
 		/**
 		 * Run tasks.
+		 * This will run tasks immediately, and sequentially.
 		 */
 		void RunTasks();
+
+		/**
+		 * Schedule tasks.
+		 * This will run them using jobs with appropriate synchronization.
+		 */
+		void ScheduleTasks();
 
 	private:
 		struct TaskGraphImpl* impl_ = nullptr;
@@ -72,4 +77,3 @@ namespace Job
 
 
 } // namespace Job
-
