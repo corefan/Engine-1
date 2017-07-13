@@ -59,7 +59,7 @@ namespace
 		}
 
 		bool LoadResource(
-		    Resource::IFactoryContext& context, void** inResource, const Core::UUID& type, Core::File& inFile) override
+		    Resource::IFactoryContext& context, void** inResource, const Core::UUID& type, const char* name, Core::File& inFile) override
 		{
 			// Check type.
 			if(type != TestResource::GetTypeUUID())
@@ -154,6 +154,11 @@ TEST_CASE("resource-tests-request")
 	auto* factory = new TestFactory();
 	REQUIRE(Resource::Manager::RegisterFactory(TestResource::GetTypeUUID(), factory));
 
+	{
+		auto file = Core::File("converter.test", Core::FileFlags::CREATE | Core::FileFlags::WRITE);
+		REQUIRE(file);	
+	}
+
 	TestResource* testResource = nullptr;
 	REQUIRE(Resource::Manager::RequestResource(testResource, "converter.test"));
 	REQUIRE(testResource);
@@ -175,6 +180,11 @@ TEST_CASE("resource-tests-request-multiple")
 
 	TestResource* testResourceA = nullptr;
 	TestResource* testResourceB = nullptr;
+
+	{
+		auto file = Core::File("converter.test", Core::FileFlags::CREATE | Core::FileFlags::WRITE);
+		REQUIRE(file);	
+	}
 
 	REQUIRE(Resource::Manager::RequestResource(testResourceA, "converter.test"));
 	REQUIRE(testResourceA);
