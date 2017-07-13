@@ -1,30 +1,15 @@
 #include "job/manager.h"
+#include "job/private/internal_types.h"
+
 #include "core/concurrency.h"
 #include "core/mpmc_bounded_queue.h"
 #include "core/timer.h"
 #include "core/vector.h"
 
-#include <utility>
-
 #define VERBOSE_LOGGING (0)
 
 namespace Job
 {
-	/**
-	 * Counter internal details.
-	 */
-	struct Counter final
-	{
-		/// Counter value. Decreases as job completes.
-		volatile i32 value_ = 0;
-		/// Should counter be freed by the last that's using it?
-		bool free_ = false;
-
-		Counter() = default;
-		Counter(const Counter&) = delete;
-	};
-
-
 	/**
 	 * Private manager implementation.
 	 */

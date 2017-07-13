@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/types.h"
 #include "job/dll.h"
+#include "core/types.h"
 
 namespace Job
 {

@@ -1,11 +1,14 @@
 SET(SOURCES_PUBLIC 
 	"dll.h"
 	"manager.h"
+	"task_graph.h"
 	"types.h"
 )
 
 SET(SOURCES_PRIVATE 
+	"private/internal_types.h"
 	"private/manager.cpp"
+	"private/task_graph.cpp"
 )
 
 SET(SOURCES_TESTS
