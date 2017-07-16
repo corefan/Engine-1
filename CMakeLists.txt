@@ -77,6 +77,11 @@ IF(MSVC)
     ADD_DEFINITIONS(/WX)		# warnings as errors
     ADD_DEFINITIONS(/wd4100)	# disable unreferenced formal parameter
 
+    # Disable a handful of warnings for clang-cl.
+    #ADD_DEFINITIONS(-Wno-macro-redefined)
+    #ADD_DEFINITIONS(-Wno-unused-command-line-argument)
+    #ADD_DEFINITIONS(-Wno-microsoft-enum-value)
+
     # Disable exceptions.
 	ADD_DEFINITIONS(/EHsc)
 ENDIF()
