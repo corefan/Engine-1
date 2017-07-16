@@ -9,6 +9,7 @@
 #elif PLATFORM_WINDOWS
 #include <direct.h>
 #pragma warning(disable : 4996) // '_open': This function or variable may be unsafe...
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #define WIN32_LEAN_AND_MEAN
 #include "core/os.h"
@@ -84,27 +85,27 @@ namespace Core
 		{
 			if(created)
 			{
-				struct tm* createdTime = nullptr;
-				createdTime = gmtime(&(attrib.st_ctime));
-				created->year_ = (i16)createdTime->tm_year;
-				created->month_ = (i16)createdTime->tm_mon;
-				created->day_ = (i16)createdTime->tm_mday;
-				created->hours_ = (i16)createdTime->tm_hour;
-				created->minutes_ = (i16)createdTime->tm_min;
-				created->seconds_ = (i16)createdTime->tm_sec;
+				struct tm createdTime;
+				gmtime_s(&createdTime, &attrib.st_ctime);
+				created->year_ = (i16)createdTime.tm_year;
+				created->month_ = (i16)createdTime.tm_mon;
+				created->day_ = (i16)createdTime.tm_mday;
+				created->hours_ = (i16)createdTime.tm_hour;
+				created->minutes_ = (i16)createdTime.tm_min;
+				created->seconds_ = (i16)createdTime.tm_sec;
 				created->milliseconds_ = 0;
 			}
 
 			if(modified)
 			{
-				struct tm* modifiedTime = nullptr;
-				modifiedTime = gmtime(&(attrib.st_mtime));
-				modified->year_ = (i16)modifiedTime->tm_year;
-				modified->month_ = (i16)modifiedTime->tm_mon;
-				modified->day_ = (i16)modifiedTime->tm_mday;
-				modified->hours_ = (i16)modifiedTime->tm_hour;
-				modified->minutes_ = (i16)modifiedTime->tm_min;
-				modified->seconds_ = (i16)modifiedTime->tm_sec;
+				struct tm modifiedTime;
+				gmtime_s(&modifiedTime, &attrib.st_mtime);
+				modified->year_ = (i16)modifiedTime.tm_year;
+				modified->month_ = (i16)modifiedTime.tm_mon;
+				modified->day_ = (i16)modifiedTime.tm_mday;
+				modified->hours_ = (i16)modifiedTime.tm_hour;
+				modified->minutes_ = (i16)modifiedTime.tm_min;
+				modified->seconds_ = (i16)modifiedTime.tm_sec;
 				modified->milliseconds_ = 0;
 			}
 
@@ -528,7 +529,7 @@ namespace Core
 			i64 bytesRead = 0;
 			if(ContainsAllFlags(GetFlags(), FileFlags::READ))
 			{
-				DBG_ASSERT(bytes <= SIZE_MAX);
+				DBG_ASSERT(bytes <= INT64_MAX);
 				bytesRead = ::fread(buffer, 1, bytes, fileHandle_);
 			}
 			return bytesRead;
@@ -539,7 +540,7 @@ namespace Core
 			i64 bytesWritten = 0;
 			if(ContainsAllFlags(GetFlags(), FileFlags::WRITE))
 			{
-				DBG_ASSERT(bytes <= SIZE_MAX);
+				DBG_ASSERT(bytes <= INT64_MAX);
 				bytesWritten = ::fwrite(buffer, 1, bytes, fileHandle_);
 			}
 			return bytesWritten;
@@ -547,7 +548,7 @@ namespace Core
 
 		bool Seek(i64 offset) override
 		{
-			DBG_ASSERT(offset <= SIZE_MAX);
+			DBG_ASSERT(offset <= INT64_MAX);
 			return 0 == ::fseek(fileHandle_, (long)offset, SEEK_SET);
 		}
 

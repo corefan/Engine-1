@@ -1061,6 +1061,8 @@ namespace GPU
 		case ResourceType::COMMAND_LIST:
 			delete commandLists_[handle.GetIndex()];
 			commandLists_[handle.GetIndex()] = nullptr;
+		default: 
+			DBG_ASSERT(false);
 			break;
 		}
 		//

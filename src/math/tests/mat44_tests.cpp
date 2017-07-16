@@ -19,7 +19,7 @@ TEST_CASE("mat44-tests-mul")
 
 	Math::Mat44 c;
 
-	u64 numIters = 10000000LL;
+	i64 numIters = 10000000LL;
 
 	{
 		u64 begin;
@@ -66,7 +66,7 @@ TEST_CASE("mat44-tests-inverse")
 
 	Math::Mat44 c;
 
-	u64 numIters = 10000000LL;
+	i64 numIters = 10000000LL;
 
 	{
 		u64 begin;

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "plugin/manager.h"
 
 #include "core/concurrency.h"

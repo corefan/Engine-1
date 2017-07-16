@@ -117,7 +117,7 @@
 #endif
 
 // Clang
-#if defined(__llvm__)
+#if defined(__llvm__) || defined(__clang__)
 #define COMPILER_CLANG 1
 #define NOEXCEPT noexcept
 #define FORCEINLINE

@@ -94,7 +94,7 @@ namespace Resource
 					const char* paths[] = {"", "../../../../res"};
 
 					char intPath[Core::MAX_PATH_LENGTH];
-					for(i32 i = 0; i < sizeof(paths) / sizeof(paths[0]); ++i)
+					for(i32 i = 0; i < (i32)(sizeof(paths) / sizeof(paths[0])); ++i)
 					{
 						memset(intPath, 0, sizeof(intPath));
 						Core::FileAppendPath(intPath, sizeof(intPath), paths[i]);

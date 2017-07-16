@@ -2,6 +2,9 @@
 
 #if PLATFORM_WINDOWS
 #include "core/os.h"
+
+//#pragma clang diagnostic ignored "-Wmicrosoft-cast"
+
 #endif
 
 #if PLATFORM_LINUX

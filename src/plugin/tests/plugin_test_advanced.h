@@ -5,15 +5,14 @@
 
 struct PluginTestAdvancedVtbl
 {
-	typedef void (*SetNumberFn)(class PluginTestAdvanced*, int);
-	typedef int (*GetNumberFn)(const class PluginTestAdvanced*);
+	typedef void (*SetNumberFn)(struct PluginTestAdvanced*, int);
+	typedef int (*GetNumberFn)(const struct PluginTestAdvanced*);
 	SetNumberFn SetNumber_ = nullptr;
 	GetNumberFn GetNumber_ = nullptr;
 };
 
-class PluginTestAdvanced : Plugin::Plugin
+struct PluginTestAdvanced : Plugin::Plugin
 {
-public:
 	DECLARE_PLUGININFO(PluginTestAdvanced, 0);
 
 	void SetNumber(int num) { vtbl_->SetNumber_(this, num); }

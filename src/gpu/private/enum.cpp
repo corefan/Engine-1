@@ -6,7 +6,7 @@ namespace Core
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::Format::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::Format::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -113,16 +113,16 @@ case GPU::Format::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(ETC2_UNORM)
 			CASE_STRING(ETC2A_UNORM)
 			CASE_STRING(ETC2A1_UNORM)
+			default: return nullptr;
 		}
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::TextureType val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::TextureType::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::TextureType::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -131,17 +131,17 @@ case GPU::TextureType::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(TEX2D)
 			CASE_STRING(TEX3D)
 			CASE_STRING(TEXCUBE)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::AddressingMode val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::AddressingMode::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::AddressingMode::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -149,17 +149,17 @@ case GPU::AddressingMode::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(MIRROR)
 			CASE_STRING(CLAMP)
 			CASE_STRING(BORDER)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::FilteringMode val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::FilteringMode::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::FilteringMode::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -169,34 +169,34 @@ case GPU::FilteringMode::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(LINEAR_MIPMAP_NEAREST)
 			CASE_STRING(NEAREST_MIPMAP_LINEAR)
 			CASE_STRING(LINEAR_MIPMAP_LINEAR)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::FillMode val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::FillMode::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::FillMode::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
 			CASE_STRING(INVALID)
 			CASE_STRING(SOLID)
 			CASE_STRING(WIREFRAME)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::CullMode val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::CullMode::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::CullMode::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -204,17 +204,17 @@ case GPU::CullMode::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(NONE)
 			CASE_STRING(CCW)
 			CASE_STRING(CW)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::BlendType val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::BlendType::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::BlendType::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -229,17 +229,17 @@ case GPU::BlendType::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(INV_DEST_COLOR)
 			CASE_STRING(DEST_ALPHA)
 			CASE_STRING(INV_DEST_ALPHA)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::BlendFunc val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::BlendFunc::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::BlendFunc::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -249,17 +249,17 @@ case GPU::BlendFunc::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(REV_SUBTRACT)
 			CASE_STRING(MINIMUM)
 			CASE_STRING(MAXIMUM)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::CompareMode val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::CompareMode::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::CompareMode::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -272,17 +272,17 @@ case GPU::CompareMode::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(NOT_EQUAL)
 			CASE_STRING(GREATER_EQUAL)
 			CASE_STRING(ALWAYS)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 	const char* EnumToString(GPU::StencilFunc val)
 	{
 #define CASE_STRING(ENUM_VALUE)                                                                                        \
 	\
-case GPU::StencilFunc::##ENUM_VALUE : return #ENUM_VALUE;
+case GPU::StencilFunc::ENUM_VALUE : return #ENUM_VALUE;
 
 		switch(val)
 		{
@@ -295,10 +295,10 @@ case GPU::StencilFunc::##ENUM_VALUE : return #ENUM_VALUE;
 			CASE_STRING(DECR)
 			CASE_STRING(DECR_WRAP)
 			CASE_STRING(INVERT)
+			default: return nullptr;
 		}
 
 #undef CASE_STRING
-		return nullptr;
 	}
 
 } // namespace Core

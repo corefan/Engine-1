@@ -340,8 +340,8 @@ namespace Serialization
 
 		void EndObject() override { objectStack_.pop_back(); }
 
-		virtual bool IsReading() const { return false; }
-		virtual bool IsWriting() const { return true; }
+		bool IsReading() const override { return false; }
+		bool IsWriting() const override { return true; }
 	};
 
 	struct SerializerImplReadJson : SerializerImpl
@@ -440,8 +440,8 @@ namespace Serialization
 
 		void EndObject() override { objectStack_.pop_back(); }
 
-		virtual bool IsReading() const { return true; }
-		virtual bool IsWriting() const { return false; }
+		bool IsReading() const override { return true; }
+		bool IsWriting() const override { return false; }
 	};
 
 	Serializer::Serializer(Core::File& file, Flags flags)

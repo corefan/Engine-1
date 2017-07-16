@@ -297,6 +297,8 @@ namespace GPU
 				info.blockW_ = 4;
 				info.blockH_ = 4;
 				break;
+			default:
+				break;
 			}
 		}
 		else

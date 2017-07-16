@@ -210,19 +210,6 @@ namespace Math
 		}
 	}
 
-	void Quat::RotateTo(const Vec3& From, const Vec3& To)
-	{
-		const Vec3 FromNormalised(From.Normal());
-		const Vec3 ToNormalised(To.Normal());
-		const Vec3 Axis(From.Cross(To));
-		const f32 RadSin = sqrtf((1.0f - (FromNormalised.Dot(To))) * 0.5f);
-
-		x = RadSin * Axis.x;
-		y = RadSin * Axis.y;
-		z = RadSin * Axis.z;
-		w = sqrtf((1.0f + (FromNormalised.Dot(To))) * 0.5f);
-	}
-
 	void Quat::AxisAngle(const Vec3& Axis, f32 Angle)
 	{
 		const Vec3 AxisNormalised(Axis.Normal());

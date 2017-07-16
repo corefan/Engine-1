@@ -46,7 +46,6 @@ namespace Math
 		void AsMatrix4d(Mat44& Matrix) const;
 
 		//
-		void RotateTo(const Vec3& From, const Vec3& To);
 		void AxisAngle(const Vec3& Axis, f32 Angle);
 
 		//

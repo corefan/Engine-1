@@ -47,8 +47,7 @@ namespace Serialization
 			if(IsReading())
 			{
 				char valueStr[32] = {0};
-				SerializeString(key, &valueStr[0], sizeof(valueStr));
-				if(valueStr != nullptr)
+				if(SerializeString(key, &valueStr[0], sizeof(valueStr)))
 				{
 					return Core::EnumFromString(value, valueStr);
 				}
@@ -56,7 +55,10 @@ namespace Serialization
 			else if(IsWriting())
 			{
 				const char* valueStr = Core::EnumToString(value);
-				SerializeString(key, (char*)valueStr, 0);
+				if(valueStr != nullptr)
+				{
+					SerializeString(key, (char*)valueStr, 0);
+				}
 			}
 			return true;
 		}

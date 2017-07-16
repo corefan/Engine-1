@@ -35,7 +35,7 @@ namespace GPU
 	Core::LibHandle DXGIDebugHandle = 0;
 	Core::LibHandle DXGIHandle = 0;
 	Core::LibHandle D3D12Handle = 0;
-	extern PFN_GET_DXGI_DEBUG_INTERFACE DXGIGetDebugInterface1Fn = nullptr;
+	PFN_GET_DXGI_DEBUG_INTERFACE DXGIGetDebugInterface1Fn = nullptr;
 	PFN_CREATE_DXGI_FACTORY DXGICreateDXGIFactory2Fn = nullptr;
 	PFN_D3D12_CREATE_DEVICE D3D12CreateDeviceFn = nullptr;
 	PFN_D3D12_GET_DEBUG_INTERFACE D3D12GetDebugInterfaceFn = nullptr;

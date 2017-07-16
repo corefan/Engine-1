@@ -158,12 +158,12 @@ namespace Core
 			size_ = size;
 		}
 
-		void resize(index_type size, const TYPE& default)
+		void resize(index_type size, const TYPE& def)
 		{
 			if(size_ != size)
 				internalResize(size);
 			for(index_type idx = size_; idx < size; ++idx)
-				new(data_ + idx) TYPE(default);
+				new(data_ + idx) TYPE(def);
 			size_ = size;
 		}
 

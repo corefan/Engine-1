@@ -266,8 +266,6 @@ namespace ImGui
 		{
 			if(IO.KeyMap[i] != -1)
 				IO.KeysDown[i] = input.IsKeyDown(keyMap_[i]);
-			if(IO.KeysDown[i])
-				i = i;
 		}
 
 		char textBuffer[4096] = {0};

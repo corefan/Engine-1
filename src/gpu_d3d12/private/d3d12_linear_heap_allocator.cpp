@@ -68,7 +68,7 @@ namespace GPU
 			DBG_ASSERT((allocation.offsetInBaseResource_ & (alignment - 1)) == 0);
 		}
 
-		return std::move(allocation);
+		return allocation;
 	}
 
 	void D3D12LinearHeapAllocator::Reset()
@@ -150,6 +150,6 @@ namespace GPU
 		// Blocks created.
 		++blocksCreated_;
 
-		return std::move(block);
+		return block;
 	}
 } // namespace GPU

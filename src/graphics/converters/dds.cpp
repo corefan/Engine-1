@@ -377,6 +377,10 @@ namespace Graphics
 				return GPU::Format::BC7_UNORM;
 			case DXGI_FORMAT_BC7_UNORM_SRGB:
 				return GPU::Format::BC7_UNORM_SRGB;
+
+			default: 
+				DBG_ASSERT(false);
+				break;
 			}
 			return GPU::Format::INVALID;
 		}
@@ -411,6 +415,10 @@ namespace Graphics
 				return GPU::Format::BC5_UNORM;
 			case D3DFMT_BC5S:
 				return GPU::Format::BC5_SNORM;
+
+			default: 
+				DBG_ASSERT(false);
+				break;
 			}
 
 			return GPU::Format::INVALID;

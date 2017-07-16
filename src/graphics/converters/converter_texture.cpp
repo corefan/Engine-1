@@ -182,8 +182,6 @@ namespace
 
 		Graphics::Image EncodeAsBCn(const Graphics::Image& image, GPU::Format format)
 		{
-			auto formatInfo = GPU::GetFormatInfo(format);
-
 			if(image.type_ != GPU::TextureType::TEX2D)
 			{
 				Core::Log("ERROR: Can only encode TEX2D as BC (for now)");
